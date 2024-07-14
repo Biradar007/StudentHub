@@ -1,0 +1,238 @@
+﻿@model IEnumerable<SH.ViewModels.CourseInfoVM>
+
+@{
+    ViewBag.Title = "CourseList";
+    Layout = "~/Views/Shared/_NavBarLayout.cshtml";
+}
+
+<h2 style="text-align:center">Course List</h2>
+
+<p>
+    <input type="button" class="btn btn-success" value="Add New Course" maxlength="50" tabindex="-1" title="ADD COURSE" onclick="AddCourse()" />
+</p>
+<table class="table table-bordered table-condensed table-hover display compact">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseName)
+            </th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+@* Add Popup *@
+<div class="modal fade" id="AddCourse" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-11" style="text-align:center">
+                        <h3>Add Course</h3>
+                    </div>
+                    <div class="col-md-1" style="margin-top:10px;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="float:right">X</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="AddCourseModal">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* Edit Popup *@
+<div class="modal fade" id="EditCourse" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-11" style="text-align:center">
+                        <h3>Edit Course</h3>
+                    </div>
+                    <div class="col-md-1" style="margin-top:10px;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="float:right">X</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="EditCourseModal">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <!-- Data Table -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var table = $('.table').DataTable({
+                "serverSide": true,
+                "pageLength": 10,
+                "order": [[0, "desc"]],
+                "autoWidth": true,
+                //paging: true,
+                "searching": true,
+                "ajax": {
+                    url: "@Url.Action("ListAllData", "Course",null, protocol: Request.Url.Scheme)",
+
+                    type: "POST",
+                    datatype: "json",
+                    data: function (d) {
+                    },
+                },
+                "processing": true,
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "searchable": true,
+                        "orderable": true,
+                    },
+                    {
+                        "targets": [1],
+                        "searchable": true,
+                        "orderable": true,
+                    },
+                    {
+                        "targets": [2],
+                        "searchable": false,
+                        "orderable": false,
+                    },
+                    {
+                        "targets": [3],
+                        "searchable": false,
+                        "orderable": false,
+                    },
+                ],
+                "columns": [
+                    {
+                        "autoWidth": true,
+                        "name": "CourseId",
+                        "render": function (data, type, row) {
+                            return '<b>' + row.CourseId + '</b>'
+                        },
+                    },
+                    {
+                        "autoWidth": true,
+                        "name": "CourseName",
+                        "render": function (data, type, row) {
+                            return '<b>' + row.CourseName + '</b>'
+                        },
+                    },
+                    {
+                        "autoWidth": true,
+                        "name": "Edit",
+                        "render": function (data, type, row) {
+                            return `<button onclick = "EditCourse(` + row.CourseId +`)"class="btn btn-info">Edit</button>`
+                        },
+                    },
+                    {
+                        "autoWidth": true,
+                        "name": "Delete",
+                        "render": function (data, type, row) {
+                            return `<button onclick = "DeleteCourse(` + row.CourseId + `)"class="btn btn-danger">Delete</button>`
+                        },
+                    },
+                ],
+                "createdRow": function (row, data, index) {
+                    console.log("data", data);
+                },
+        });
+        });
+
+         function AddCourse() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddCourseInfo", "Course")',
+                success: function (data) {
+                    $('#AddCourseModal').html('');
+                    $('#AddCourseModal').html(data);
+                    $('#AddCourse').modal('show');
+                },
+                error: function (data, error, status) {
+                    console.log(error, status);
+                }
+            });
+
+        }
+        function EditCourse(CourseId) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("EditCourse", "Course")',
+                data: { CourseId: CourseId },
+                success: function (data) {
+                    $('#EditCourseModal').html('');
+                    $('#EditCourseModal').html(data);
+                    $('#EditCourse').modal('show');
+                },
+                error: function (data, error, status) {
+                    console.log(error, status);
+                }
+            });
+        }
+        function DeleteCourse(CourseId) {
+            debugger;
+                swal({
+                    title: "Question!",
+                    text: "Are you sure you want to delete the record?",
+                    type: "question",
+                    confirmButtonText: "Yes",
+                    showCancelButton: true
+                })
+                    .then((result) => {
+                        if (result.value) {
+                             $.ajax({
+                                            type: 'POST',
+                                            url: '@Url.Action("DeleteCourse", "Course")',
+                                            data: { CourseId: CourseId },
+                                            success: function (data) {
+                                                window.location.href = '@Url.Action("CourseList", "Course")';
+                                            },
+                                            error: function (data, error, status) {
+                                                console.log(error, status);
+                                            }
+                             });
+                        }
+                    })
+        }
+        function AddUpdateData() {
+            debugger;
+            var Name = document.getElementById("CourseName").value;
+
+            if (Name == "") {
+                swal({
+                    title: "Info!",
+                    text: "Please enter course name.",
+                    type: "info",
+                })
+            }
+            else {
+                $('#AddUpdateCourse').submit();
+            }
+        }
+    </script>
+
+}

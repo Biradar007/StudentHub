@@ -1,0 +1,161 @@
+﻿@model SH.ViewModels.StudentInfoVM
+@{
+    var AllCountries = TempData["AllCountries"] as List<SelectListItem>;
+    var AllCourses = TempData["AllCourses"] as List<SelectListItem>;
+    var AllStates = TempData["AllStates"] as List<SelectListItem>;
+    var AllCities = TempData["AllCities"] as List<SelectListItem>;
+}
+<style>
+    .chksize {
+        transform: scale(2) !important;
+    }
+</style>
+@using (Html.BeginForm("AddStudent", "Student", FormMethod.Post, new { @id = "AddUpdateStudentForm", @class = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.StudentId)
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="StudentName">Name<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StudentName, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })*@
+                <div class="invalid-feedback">Please provide a valid name.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="StudentEmail">Email<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StudentEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StudentEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="StudentPhone">Phone Number<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StudentPhone, new { htmlAttributes = new { @type = "number", @maxlength = "10", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StudentPhone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="DOB">Date of Birth<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control", @data_provide = "datepicker", @style = "width:340px", @id = "BirthDate" } })
+                @*<input type="datetime" name="DOB" id="BirthDate" class="form-control fontSet txtmaxwidth" placeholder="Date of Birth" readonly="readonly" style="background-color:white;margin-left:5px;color:black;font-weight:bold" value="@Request["StartDate"]" />*@
+                @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="State">State<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownListFor(model => model.State, AllStates, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="City">City<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownListFor(model => model.City, AllCities, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="Country">Country<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Country, AllCountries, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StudentStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox" style="margin-left:10px">
+                    @Html.CheckBoxFor(model => model.StudentStatus, new { @class = "chksize" })
+                </div>
+                @Html.ValidationMessageFor(model => model.StudentStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="Gender">Gender<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                Female
+                @Html.RadioButtonFor(model => model.Gender, "Female")
+                Male
+                @Html.RadioButtonFor(model => model.Gender, "Male")
+                Others
+                @Html.RadioButtonFor(model => model.Gender, "Others")
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="Courses">Courses<span style="color: red;font-size: 20px">*</span></label>
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CourseList, AllCourses, new { @class = "form-control ", @id = "CoursesDropDown", @multiple = "multiple", @style = "width:280px" })
+                @Html.ValidationMessageFor(model => model.Courses, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="Description">Description</label>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, 5, 40, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right">
+                <label for="file">Upload Image</label>
+            </div>
+            <div class="col-md-10">
+                @*@Html.TextBox("file", "", new { type = "file", accept = ".jpg, .png" })*@
+                <input type="file" name="file" accept=".jpg, .png" max-size="250000">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @*<input value="Save" class="btn btn-primary" onclick="AddUpdateData()" />*@
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

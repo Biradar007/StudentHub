@@ -1,0 +1,31 @@
+﻿@model SH.ViewModels.CourseInfoVM
+
+
+@using (Html.BeginForm("AddCourse", "Course", FormMethod.Post, new { @id = "AddUpdateCourse" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.CourseId)
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="CourseName">Course Name<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CourseName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CourseName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input value="Save" class="btn btn-primary" onclick="AddUpdateData()" />
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,114 @@
+﻿@model SH.ViewModels.StudentInfoVM
+<html>
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.StudentEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentEmail)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.StudentPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentPhone)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.DOB)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.DOB)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.State)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.State)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.City)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.City)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Country)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.StudentStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentStatus)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Gender)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Courses)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Courses)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Description)
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

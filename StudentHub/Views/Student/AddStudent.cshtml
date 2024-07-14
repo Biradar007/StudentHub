@@ -1,0 +1,220 @@
+﻿@model SH.ViewModels.StudentInfoVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_NavBarLayout.cshtml";
+    var AllCountries = TempData["AllCountries"] as List<SelectListItem>;
+    var AllCourses = TempData["AllCourses"] as List<SelectListItem>;
+    var AllStates = TempData["AllStates"] as List<SelectListItem>;
+    var AllCities = TempData["AllCities"] as List<SelectListItem>;
+
+}
+
+<style>
+    .chksize {
+        transform: scale(2) !important;
+    }
+</style>
+
+@using (Html.BeginForm("AddStudent", "Student", FormMethod.Post, new { @id = "AddUpdateStudentForm", @class = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <div>
+        <h2 style="text-align:center">@ViewBag.Message</h2>
+    </div>
+    <hr />
+    @Html.HiddenFor(model => model.StudentId)
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="StudentName">Name<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.StudentName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="StudentEmail">Email<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.StudentEmail, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StudentEmail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="StudentPhone">Phone Number<span style="color: red;font-size: 20px">*</span></label>
+        </div>        <div class="col-md-10">
+            @Html.EditorFor(model => model.StudentPhone, new { htmlAttributes = new { @type = "number", @maxlength = "10", @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StudentPhone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="DOB">Date of Birth<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="Country">Country<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Country, AllCountries, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="State">State<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.State, AllStates, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="City">City<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.City, AllCities, new { @class = "form-control", @id = "DDCities" })
+            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StudentStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.CheckBoxFor(model => model.StudentStatus, new { htmlAttributes = new { @class = "chksize" } })
+            @Html.ValidationMessageFor(model => model.StudentStatus, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="Gender">Gender<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            Female
+            @Html.RadioButtonFor(model => model.Gender, "Female")
+            Male
+            @Html.RadioButtonFor(model => model.Gender, "Male")
+            Others
+            @Html.RadioButtonFor(model => model.Gender, "Others")
+            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="Courses">Courses</label>
+        </div>
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.CourseList, AllCourses, new { @class = "form-control ", @id = "CoursesDropDown", @multiple = "multiple", @style = "width:280px" })
+            @Html.ValidationMessageFor(model => model.Courses, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="Description">Description<span style="color: red;font-size: 20px">*</span></label>
+        </div>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Description, 5, 40, new { maxlength = 250 })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2" style="text-align:right">
+            <label for="file">Upload Image</label>
+        </div>
+        <div class="col-md-10">
+            <input type="file" name="file" accept=".jpg, .png" max-size="250000">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    <input type="button" class="btn btn-info" value="Back to List" maxlength="50" tabindex="-1" onclick="location.href='@Url.Action("StudentList", "Student")';return false;" />
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://vsn4ik.github.io/bootstrap-checkbox/dist/js/bootstrap-checkbox.js" defer></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js'></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css'
+          media="screen" />
+    <!-- Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>    <!-- Bootstrap DatePicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var dateTimeOptions = {
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "mm-dd-yy",
+                defaultDate: 0
+            };
+            $('#DOB').datepicker(dateTimeOptions);
+            $('#CoursesDropDown').select2({
+                tags: true,
+            });
+            var SelectedCources = @Html.Raw(Json.Encode(Model.CourseList));
+            $('#CoursesDropDown').val(SelectedCources).trigger('change');
+        });
+
+        $("#State").change(function () {
+            var SelectedState = $("#State").val();
+            GetCities(SelectedState);
+        });
+        function GetCities(SelectedState) {
+            debugger;
+              $.ajax({
+                type: 'POST',
+                  url: '@Url.Action("GetCities", "Student")',
+                  dataType: 'json',
+                data: { State: SelectedState },
+                success: function (data) {
+                    debugger;
+                    $("#DDCities").empty();
+                    $.each(data, function (i, data) {
+                        $("#DDCities").append('<option value="'
+                            + data.Value + '">'
+                            + data.Text + '</option>');
+                    });
+                    },
+
+                error: function (data, error, status) {
+                    console.log(error, status);
+                }
+            });
+        }
+
+    </script>
+}

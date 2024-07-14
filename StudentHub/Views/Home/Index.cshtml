@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    body {
+        background-color: #cccccc;
+    }
+    .buttonIcon {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        width: 165px;
+        margin: 4px 2px;
+        background-color: #AFCADA;
+        color: slategrey;
+    }
+</style>
+<body>
+    <div class="jumbotron" style="padding-bottom:20px;box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)">
+        <h1 style="text-align: center; text-shadow: 2px 2px 7px #808080;">Employee Hub</h1>
+        <p class="lead" style="text-shadow: 2px 2px 7px #808080;">Student Hub is an online platform designed to facilitate the management of student details and course information. It serves as a centralized system where administrators, educators, and students can access and update relevant information.</p>
+    </div>
+    <br /><br /><br />
+    <div class="row">
+        <div class="col-md-6 text-center">
+            @if (Session.Keys.Count == 0)
+            {
+                @Html.ActionLink("Student", "UserLogin", "User", null, new { @class = "btn btn-info buttonIcon" })<br /><br /><br />
+            }
+            else
+            {
+                @Html.ActionLink("Student", "StudentList", "Student", null, new { @class = "btn btn-info buttonIcon" })<br /><br /><br />
+            }
+            <p class="card-text" style="font-size: 20px;text-shadow: 2px 2px 7px #808080;">Use this module to manage students data.</p>
+        </div>
+
+        <div class="col-md-6 text-center">
+            @if (Session.Keys.Count == 0)
+            {
+                @Html.ActionLink("Course", "UserLogin", "User", null, new { @class = "btn btn-info buttonIcon" })<br /><br /><br />
+            }
+            else
+            {
+                @Html.ActionLink("Course", "CourseList", "Course", null, new { @class = "btn btn-info buttonIcon" })<br /><br /><br />
+            }            <p class="card-text" style="font-size: 20px; text-shadow: 2px 2px 7px #808080;">Use this module to manage courses data.</p>
+        </div>
+    </div>
+</body>
